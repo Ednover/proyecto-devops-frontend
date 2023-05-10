@@ -1,9 +1,18 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Login, Register } from "./pages";
+import { Layout } from "./components";
+
 function App() {
 
   return (
-    <>
-      <div className='flex justify-center items-center text-2xl h-screen'>Hola devops</div>
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   )
 }
 

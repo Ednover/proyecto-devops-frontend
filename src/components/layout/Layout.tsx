@@ -1,5 +1,5 @@
 import { Link, Outlet } from "react-router-dom";
-import pic from '/images/20687.png'
+import pic from "/images/20687.png";
 
 export default function Layout() {
   return (
@@ -11,7 +11,7 @@ export default function Layout() {
               <div className="flex-shrink-0 flex items-center">
                 <Link
                   className="w-full h-full p-3 flex text-gray-500 hover:text-gray-700"
-                  to="/"
+                  to="/dashboard"
                 >
                   <img
                     className="w-auto h-auto mr-3"
@@ -48,5 +48,5 @@ export default function Layout() {
         </div>
       </main>
     </div>
-  )
+  );
 }

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { InputForm, SubmitForm } from "../../components";
+import axiosClient from "../../api/apiClient";
 
 const content = {
   linkUrl: "/register",
@@ -29,6 +30,8 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log(formState);
+
+    axiosClient.post('/api/auth').then((res) => {console.log(res)})
 
     try {
       setDisplayError(false);

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { InputForm, SubmitForm } from "../../components";
+import axiosClient from "../../api/apiClient";
 
 const content = {
     linkUrl: "/login",
@@ -30,12 +31,18 @@ const Register = () => {
     e.preventDefault();
     console.log(formState);
 
+    axiosClient.post('/api/register', formState)
+      .then((res) => {console.log(res)})
+      .catch((error) =>{
+        console.log(error)
+      })
+
     try {
       setDisplayError(false);
     } catch (e) {
       setError(`Could not`);
     } finally {
-      setFormState({ ...initial });
+      //setFormState({ ...initial });
       setDisplayError(true);
     }
   };

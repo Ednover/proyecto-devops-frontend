@@ -11,6 +11,7 @@ const Budgets = () => {
   const [budgets, setBudgets] = useState<Budget[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedBudget, setSelectedBudget] = useState<Budget | null>(null);
+  const [expenseValue, setExpenseValue] = useState("");
   const [formState, setFormState] = useState({
     name: "",
     description: "",
@@ -18,6 +19,30 @@ const Budgets = () => {
     startDate: "",
     endDate: "",
   });
+
+  const handleExpense = (e: any) => {
+    e.preventDefault();
+    const newAmountLeft = selectedBudget!.amountLeft - parseInt(expenseValue);
+    setLoading(true);
+
+    axios
+      .put(`http://localhost:3000/api/budgets/${selectedBudget!.id}`, {
+        amountLeft: newAmountLeft,
+      })
+      .then((res) => {
+        closeModal();
+        fetchData();
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    setSelectedBudget(null);
+  };
+
+  const handleExpenseChange = (e: any) => {
+    setExpenseValue(e.target.value);
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -51,7 +76,6 @@ const Budgets = () => {
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formState);
 
     axios
       .post("http://localhost:3000/api/budgets", {
@@ -82,7 +106,6 @@ const Budgets = () => {
   const handleEdit = (e: any) => {
     e.preventDefault();
     setLoading(true);
-    console.log(formState);
 
     axios
       .put(`http://localhost:3000/api/budgets/${selectedBudget!.id}`, {
@@ -177,8 +200,8 @@ const Budgets = () => {
                     <div className="flex justify-around">
                       <button
                         onClick={() => {
-                          setModalTitle("Attach");
-                          openModal(null);
+                          setModalTitle("Expense");
+                          openModal(budget);
                         }}
                         className="text-green-600"
                       >
@@ -371,6 +394,40 @@ const Budgets = () => {
                   className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
                 >
                   Update
+                </button>
+              </div>
+            </form>
+          </>
+        ) : modalTitle === "Expense" ? (
+          <>
+            <h2 className="text-2xl font-bold mb-3">Add Expense</h2>
+            <p className="text-gray-600">
+              Add the amount you have spent to be discounted from your total
+              amount.
+            </p>
+            <form
+              onSubmit={handleExpense}
+              className="w-full max-w-lg mx-auto my-5"
+            >
+              <div className="mb-4">
+                <label className="block mb-2 text-gray-800" htmlFor="endDate">
+                  Amount
+                </label>
+                <input
+                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+                  type="text"
+                  id="expense"
+                  value={expenseValue}
+                  name="expense"
+                  onChange={handleExpenseChange}
+                />
+              </div>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  className="bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded"
+                >
+                  Add
                 </button>
               </div>
             </form>

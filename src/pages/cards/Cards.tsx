@@ -149,7 +149,7 @@ const Cards = () => {
         ) : (
           <table className="w-full h-full">
             <thead>
-              <tr className="bg-gray-200">
+              <tr className="bg-[#A5D8F3]">
                 <th className="py-2 px-4">Type</th>
                 <th className="py-2 px-4">Bank Name</th>
                 <th className="py-2 px-4">Number</th>

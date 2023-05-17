@@ -186,7 +186,7 @@ const Budgets = () => {
         ) : (
           <table className="w-full h-full">
             <thead>
-              <tr className="bg-gray-200">
+              <tr className="bg-[#B9E6C7]">
                 <th className="py-2 px-4">Name</th>
                 <th className="py-2 px-4">Description</th>
                 <th className="py-2 px-4">Amount</th>

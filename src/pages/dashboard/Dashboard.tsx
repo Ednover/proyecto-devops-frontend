@@ -6,7 +6,7 @@ const Dashboard = () => {
         {/* Account */}
         <Link to={"/accounts"}>
           <div className="bg-[#FFD59A] shadow-lg rounded-lg p-6">
-            <h2 className="text-xl font-semibold mb-4">Account Balance</h2>
+            <h2 className="text-xl font-semibold mb-4">Accounts</h2>
           </div>
         </Link>
 

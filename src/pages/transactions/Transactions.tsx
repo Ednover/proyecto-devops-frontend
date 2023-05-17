@@ -158,7 +158,7 @@ const Transactions = () => {
         ) : (
           <table className="w-full h-full">
             <thead>
-              <tr className="bg-gray-200">
+              <tr className="bg-[#F7B4D1]">
                 <th className="py-2 px-4">Type</th>
                 <th className="py-2 px-4">Amount</th>
                 <th className="py-2 px-4">Description</th>
@@ -265,7 +265,7 @@ const Transactions = () => {
           </>
         ) : modalTitle === "Edit" && selectedTransaction ? (
           <>
-            <h2 className="text-2xl font-bold mb-3">Edit Card</h2>
+            <h2 className="text-2xl font-bold mb-3">Edit Transaction</h2>
             <form onSubmit={handleEdit} className="w-full max-w-lg mx-auto">
               <div className="mb-4">
                 <label className="block mb-2 text-gray-800" htmlFor="type">

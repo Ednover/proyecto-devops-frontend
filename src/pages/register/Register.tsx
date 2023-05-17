@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { InputForm, SubmitForm } from "../../components";
-import axiosClient from "../../api/apiClient";
+import axios from "axios";
 
 const content = {
     linkUrl: "/login",
@@ -17,7 +17,7 @@ const Register = () => {
 
   const [displayError, setDisplayError] = useState(false);
   const [formState, setFormState] = useState({ ...initial });
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -31,20 +31,19 @@ const Register = () => {
     e.preventDefault();
     console.log(formState);
 
-    axiosClient.post('/api/register', formState)
-      .then((res) => {console.log(res)})
-      .catch((error) =>{
-        console.log(error)
+    axios.post('http://localhost:3000/api/register', formState)
+      .then((res) => {
+        console.log(res)
+        if(res.status == 200){
+          setFormState({ ...initial });
+          setDisplayError(false);
+          navigate("/login");
+        }
       })
-
-    try {
-      setDisplayError(false);
-    } catch (e) {
-      setError(`Could not`);
-    } finally {
-      //setFormState({ ...initial });
-      setDisplayError(true);
-    }
+      .catch((error) => {
+        console.log(error)
+        setDisplayError(true);
+      })
   };
 
   return (

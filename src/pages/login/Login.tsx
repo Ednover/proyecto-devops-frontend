@@ -1,7 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { InputForm, SubmitForm } from "../../components";
-import axiosClient from "../../api/apiClient";
+import axios from "axios";
+import { useAuthUser } from "../../hooks";
 
 const content = {
   linkUrl: "/register",
@@ -15,9 +16,10 @@ const initial = { email: "", password: "" };
 
 const Login = () => {
 
+  const { setAuthUser } = useAuthUser();
   const [displayError, setDisplayError] = useState(false);
   const [formState, setFormState] = useState({ ...initial });
-  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e: any) => {
     const { name, value } = e.target;
@@ -31,16 +33,27 @@ const Login = () => {
     e.preventDefault();
     console.log(formState);
 
-    axiosClient.post('/api/auth').then((res) => {console.log(res)})
-
-    try {
-      setDisplayError(false);
-    } catch (e) {
-      setError(`Could not`);
-    } finally {
-      setFormState({ ...initial });
-      setDisplayError(true);
-    }
+    axios.post('http://localhost:3000/api/auth', formState)
+      .then((res) => {
+        console.log(res);
+        const user = res.data.user;
+        const accessToken = res.data.accessToken;
+        const context = {
+          "user": user,
+          "accessToken": accessToken,
+        }
+        if(res.status == 200){
+          window.sessionStorage.setItem("Context",JSON.stringify(context))
+          setAuthUser({ user, accessToken });
+          setFormState({ ...initial });
+          setDisplayError(false);
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+        setDisplayError(true);
+      })
   };
 
   return (

@@ -165,7 +165,7 @@ const Cards = () => {
                   <td className="py-2 px-4">{card.number}</td>
                   <td className="py-2 px-4">{card.expiryDate}</td>
                   <td className="py-2 px-4">
-                    <div className="flex justify-around">
+                    <div className="flex justify-evenly">
                       <button
                         onClick={() => {
                           setModalTitle("Edit");

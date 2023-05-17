@@ -173,7 +173,7 @@ const Accounts = () => {
                     {account?.cards?.[0]?.bankName || ""}
                   </td> */}
                   <td className="py-2 px-4">
-                    <div className="flex justify-around">
+                    <div className="flex justify-evenly">
                       <button
                         onClick={() => {
                           setModalTitle("Edit");

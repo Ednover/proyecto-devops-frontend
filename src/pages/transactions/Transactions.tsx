@@ -174,7 +174,7 @@ const Transactions = () => {
                   <td className="py-2 px-4">{transaction.description}</td>
                   <td className="py-2 px-4">{transaction.transactionDate}</td>
                   <td className="py-2 px-4">
-                    <div className="flex justify-around">
+                    <div className="flex justify-evenly">
                       <button
                         onClick={() => {
                           setModalTitle("Edit");

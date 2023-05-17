@@ -208,7 +208,7 @@ const Budgets = () => {
                   <th className="py-2 px-4 font-normal">{budget.startDate}</th>
                   <th className="py-2 px-4 font-normal">{budget.endDate}</th>
                   <td className="py-2 px-4">
-                    <div className="flex justify-around">
+                    <div className="flex justify-evenly">
                       <button
                         onClick={() => {
                           setModalTitle("Expense");

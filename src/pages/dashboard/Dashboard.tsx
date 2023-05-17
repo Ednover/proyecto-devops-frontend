@@ -17,9 +17,11 @@ const Dashboard = () => {
         </Link>
 
         {/* Cards */}
-        <div className="bg-white shadow-lg rounded-lg p-6">
-          <h2 className="text-xl font-semibold mb-4">Cards</h2>
-        </div>
+        <Link to={"/cards"}>
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Cards</h2>
+          </div>
+        </Link>
       </div>
     </div>
   );

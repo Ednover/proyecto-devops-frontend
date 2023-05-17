@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login, Register } from "./pages";
-import { Layout } from "./components";
+import { Layout, Logout, RequireAuthUser } from "./components";
 import { useState } from "react";
 import { AuthUser } from "./context";
 
@@ -12,9 +12,14 @@ function App() {
     <BrowserRouter>
       <AuthUser.Provider value={{ authUser, setAuthUser }}>
         <Routes>
-          <Route path="/" element={<Layout />}>
+          <Route element={<Layout />}>
             <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
             <Route path="/register" element={<Register />} />
+          </Route>
+          <Route element={<RequireAuthUser />}>
+            <Route path="/" element={<Layout />} />
+            {/* aqui colocar todas las rutas protegidas */}
           </Route>
         </Routes>
       </AuthUser.Provider>

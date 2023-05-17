@@ -188,8 +188,11 @@ const Budgets = () => {
             <thead>
               <tr className="bg-gray-200">
                 <th className="py-2 px-4">Name</th>
+                <th className="py-2 px-4">Description</th>
                 <th className="py-2 px-4">Amount</th>
                 <th className="py-2 px-4">Amount Left</th>
+                <th className="py-2 px-4">Start Date</th>
+                <th className="py-2 px-4">End Date</th>
                 <th className="py-2 px-4">Actions</th>
               </tr>
             </thead>
@@ -197,8 +200,13 @@ const Budgets = () => {
               {budgets.map((budget: Budget) => (
                 <tr className="border-b" key={budget.id}>
                   <td className="py-2 px-4">{budget.name}</td>
+                  <th className="py-2 px-4 font-normal">
+                    {budget.description}
+                  </th>
                   <td className="py-2 px-4">{budget.amount}</td>
                   <td className="py-2 px-4">{budget.amountLeft}</td>
+                  <th className="py-2 px-4 font-normal">{budget.startDate}</th>
+                  <th className="py-2 px-4 font-normal">{budget.endDate}</th>
                   <td className="py-2 px-4">
                     <div className="flex justify-around">
                       <button

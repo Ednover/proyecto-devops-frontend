@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 const Dashboard = () => {
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Account */}
         <div className="bg-white shadow-lg rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Account Balance</h2>
@@ -20,6 +20,13 @@ const Dashboard = () => {
         <Link to={"/cards"}>
           <div className="bg-white shadow-lg rounded-lg p-6">
             <h2 className="text-xl font-semibold mb-4">Cards</h2>
+          </div>
+        </Link>
+
+        {/* Transactions */}
+        <Link to={"/transactions"}>
+          <div className="bg-white shadow-lg rounded-lg p-6">
+            <h2 className="text-xl font-semibold mb-4">Transactions</h2>
           </div>
         </Link>
       </div>

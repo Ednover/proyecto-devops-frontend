@@ -70,6 +70,7 @@ const Budgets = () => {
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
   };
 
@@ -92,6 +93,7 @@ const Budgets = () => {
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
 
     setFormState({
@@ -119,6 +121,7 @@ const Budgets = () => {
       })
       .catch((error) => {
         console.log(error);
+        setLoading(false);
       });
 
     setSelectedBudget(null);

@@ -3,28 +3,28 @@ import { useEffect, useState } from "react";
 import { Modal } from "../../components/modal";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
-import Card from "../../models/Card";
+import Transaction from "../../models/Transaction";
 
-const Cards = () => {
+const Transactions = () => {
   const [loading, setLoading] = useState(true);
   const [modalTitle, setModalTitle] = useState("");
-  const [cards, setCards] = useState<Card[]>([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedCard, setSelectedCard] = useState<Card | null>(null);
+  const [selectedTransaction, setSelectedTransaction] =
+    useState<Transaction | null>(null);
   const [formState, setFormState] = useState({
     type: "",
-    bankName: "",
-    number: "",
-    expiryDate: "",
+    amount: "",
+    description: "",
   });
 
   const handleChange = (e: any) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
     const { name, value } = e.target;
-    setSelectedCard((prevCard) => {
-      if (prevCard) {
+    setSelectedTransaction((prevTransaction) => {
+      if (prevTransaction) {
         return {
-          ...prevCard,
+          ...prevTransaction,
           [name]: value,
         };
       }
@@ -35,7 +35,7 @@ const Cards = () => {
   const handleDelete = (id: string) => {
     setLoading(true);
     axios
-      .delete(`http://localhost:3000/api/cards/${id}`, {})
+      .delete(`http://localhost:3000/api/transactions/${id}`, {})
       .then((res) => {
         closeModal();
         fetchData();
@@ -52,11 +52,10 @@ const Cards = () => {
     closeModal();
 
     axios
-      .post("http://localhost:3000/api/cards", {
+      .post("http://localhost:3000/api/transactions", {
         type: formState.type,
-        bankName: formState.bankName,
-        number: formState.number,
-        expiryDate: formState.expiryDate,
+        amount: formState.amount,
+        description: formState.description,
       })
       .then((res) => {
         closeModal();
@@ -69,9 +68,8 @@ const Cards = () => {
 
     setFormState({
       type: "",
-      bankName: "",
-      number: "",
-      expiryDate: "",
+      amount: "",
+      description: "",
     });
   };
 
@@ -81,9 +79,13 @@ const Cards = () => {
     closeModal();
 
     axios
-      .put(`http://localhost:3000/api/cards/${selectedCard!.id}`, {
-        ...selectedCard,
-      })
+      .put(
+        `http://localhost:3000/api/transactions/${selectedTransaction!.id}`,
+        {
+          ...selectedTransaction,
+          transactionDate: new Date(selectedTransaction!.transactionDate),
+        }
+      )
       .then((res) => {
         closeModal();
         fetchData();
@@ -93,22 +95,21 @@ const Cards = () => {
         setLoading(false);
       });
 
-    setSelectedCard(null);
+    setSelectedTransaction(null);
   };
 
-  const openModal = (card: Card | null) => {
-    setSelectedCard(card);
+  const openModal = (transaction: Transaction | null) => {
+    setSelectedTransaction(transaction);
     setIsOpen(true);
   };
 
   const closeModal = () => {
     setIsOpen(false);
-    setSelectedCard(null);
+    setSelectedTransaction(null);
     setFormState({
       type: "",
-      bankName: "",
-      number: "",
-      expiryDate: "",
+      amount: "",
+      description: "",
     });
   };
   useEffect(() => {
@@ -118,9 +119,17 @@ const Cards = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:3000/api/cards");
-      setCards(response.data);
-      setSelectedCard(null);
+      const response = await axios.get(
+        "http://localhost:3000/api/transactions"
+      );
+      const formattedTransactions = response.data.map(
+        (transaction: Transaction) => ({
+          ...transaction,
+          transactionDate: transaction.transactionDate.split("T")[0],
+        })
+      );
+      setTransactions(formattedTransactions);
+      setSelectedTransaction(null);
     } catch (error) {
       console.error(error);
     } finally {
@@ -138,7 +147,7 @@ const Cards = () => {
           }}
           className="bg-indigo-500 w-36 hover:bg-indigo-600 text-white font-bold rounded sm:w-40 lg:w-40"
         >
-          Create Card
+          Create Transaction
         </button>
       </div>
       <div className="w-full h-full text-center">
@@ -151,25 +160,25 @@ const Cards = () => {
             <thead>
               <tr className="bg-gray-200">
                 <th className="py-2 px-4">Type</th>
-                <th className="py-2 px-4">Bank Name</th>
-                <th className="py-2 px-4">Number</th>
-                <th className="py-2 px-4">Expiry Date</th>
+                <th className="py-2 px-4">Amount</th>
+                <th className="py-2 px-4">Description</th>
+                <th className="py-2 px-4">Transaction Date</th>
                 <th className="py-2 px-4">Actions</th>
               </tr>
             </thead>
             <tbody>
-              {cards.map((card: Card) => (
-                <tr className="border-b" key={card.id}>
-                  <td className="py-2 px-4">{card.type}</td>
-                  <td className="py-2 px-4">{card.bankName}</td>
-                  <td className="py-2 px-4">{card.number}</td>
-                  <td className="py-2 px-4">{card.expiryDate}</td>
+              {transactions.map((transaction: Transaction) => (
+                <tr className="border-b" key={transaction.id}>
+                  <td className="py-2 px-4">{transaction.type}</td>
+                  <td className="py-2 px-4">{transaction.amount}</td>
+                  <td className="py-2 px-4">{transaction.description}</td>
+                  <td className="py-2 px-4">{transaction.transactionDate}</td>
                   <td className="py-2 px-4">
                     <div className="flex justify-around">
                       <button
                         onClick={() => {
                           setModalTitle("Edit");
-                          openModal(card);
+                          openModal(transaction);
                         }}
                         className="text-yellow-500"
                       >
@@ -178,7 +187,7 @@ const Cards = () => {
                       <button
                         onClick={() => {
                           setModalTitle("Delete");
-                          handleDelete(card.id);
+                          handleDelete(transaction.id);
                         }}
                         className="text-red-500"
                       >
@@ -195,7 +204,7 @@ const Cards = () => {
       <Modal isOpen={isOpen} onClose={closeModal}>
         {modalTitle === "Create" ? (
           <>
-            <h2 className="text-2xl font-bold mb-3">Create Card</h2>
+            <h2 className="text-2xl font-bold mb-3">Create Transaction</h2>
             <form onSubmit={handleSubmit} className="w-full max-w-lg mx-auto">
               <div className="mb-4">
                 <label className="block mb-2 text-gray-800" htmlFor="type">
@@ -211,52 +220,39 @@ const Cards = () => {
                   <option value="" disabled>
                     Select a type
                   </option>
-                  <option value="Credit">Credit</option>
-                  <option value="Debit">Debit</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
                 </select>
               </div>
               <div className="mb-4">
-                <label className="block mb-2 text-gray-800" htmlFor="bankName">
-                  Bank Name
+                <label className="block mb-2 text-gray-800" htmlFor="amount">
+                  Amount
                 </label>
                 <input
                   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                   type="text"
-                  id="bankName"
-                  name="bankName"
-                  value={formState.bankName}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2 text-gray-800" htmlFor="number">
-                  Card Number
-                </label>
-                <input
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                  type="text"
-                  id="number"
-                  name="number"
-                  value={formState.number}
+                  id="amount"
+                  name="amount"
+                  value={formState.amount}
                   onChange={handleChange}
                 />
               </div>
               <div className="mb-4">
                 <label
                   className="block mb-2 text-gray-800"
-                  htmlFor="expiryDate"
+                  htmlFor="description"
                 >
-                  Expiry Date
+                  Description
                 </label>
-                <input
+                <textarea
                   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                  type="text"
-                  id="expiryDate"
-                  name="expiryDate"
-                  value={formState.expiryDate}
+                  id="description"
+                  name="description"
+                  value={formState.description}
                   onChange={handleChange}
-                />
+                ></textarea>
               </div>
+
               <div className="flex justify-end">
                 <button
                   type="submit"
@@ -267,7 +263,7 @@ const Cards = () => {
               </div>
             </form>
           </>
-        ) : modalTitle === "Edit" && selectedCard ? (
+        ) : modalTitle === "Edit" && selectedTransaction ? (
           <>
             <h2 className="text-2xl font-bold mb-3">Edit Card</h2>
             <form onSubmit={handleEdit} className="w-full max-w-lg mx-auto">
@@ -279,58 +275,45 @@ const Cards = () => {
                   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                   name="type"
                   id="type"
-                  value={selectedCard.type}
+                  value={selectedTransaction.type}
                   onChange={handleChange}
                 >
                   <option value="" disabled>
                     Select a type
                   </option>
-                  <option value="Credit">Credit</option>
-                  <option value="Debit">Debit</option>
+                  <option value="Income">Income</option>
+                  <option value="Expense">Expense</option>
                 </select>
               </div>
               <div className="mb-4">
-                <label className="block mb-2 text-gray-800" htmlFor="bankName">
-                  Bank Name
+                <label className="block mb-2 text-gray-800" htmlFor="amount">
+                  Amount
                 </label>
                 <input
                   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
                   type="text"
-                  id="bankName"
-                  name="bankName"
-                  value={selectedCard.bankName}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block mb-2 text-gray-800" htmlFor="number">
-                  Card Number
-                </label>
-                <input
-                  className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                  type="text"
-                  id="number"
-                  name="number"
-                  value={selectedCard.number}
+                  id="amount"
+                  name="amount"
+                  value={selectedTransaction.amount}
                   onChange={handleChange}
                 />
               </div>
               <div className="mb-4">
                 <label
                   className="block mb-2 text-gray-800"
-                  htmlFor="expiryDate"
+                  htmlFor="description"
                 >
-                  Expiry Date
+                  Description
                 </label>
-                <input
+                <textarea
                   className="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-                  type="text"
-                  id="expiryDate"
-                  name="expiryDate"
-                  value={selectedCard.expiryDate}
+                  id="description"
+                  name="description"
+                  value={selectedTransaction.description}
                   onChange={handleChange}
-                />
+                ></textarea>
               </div>
+
               <div className="flex justify-end">
                 <button
                   type="submit"
@@ -349,4 +332,4 @@ const Cards = () => {
   );
 };
 
-export default Cards;
+export default Transactions;

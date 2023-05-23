@@ -23,6 +23,7 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Route>
           <Route element={<RequireAuthUser />}>
+            <Route path="/" element={<Layout />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/accounts" element={<Accounts />} />
             <Route path="/budgets" element={<Budgets />} />

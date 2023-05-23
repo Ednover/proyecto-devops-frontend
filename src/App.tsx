@@ -3,6 +3,11 @@ import { Login, Register } from "./pages";
 import { Layout, Logout, RequireAuthUser } from "./components";
 import { useState } from "react";
 import { AuthUser } from "./context";
+import Dashboard from "./pages/dashboard/Dashboard";
+import Accounts from "./pages/accounts/Accounts";
+import { Budgets } from "./pages/budgets";
+import { Cards } from "./pages/cards";
+import { Transactions } from "./pages/transactions";
 
 function App() {
 

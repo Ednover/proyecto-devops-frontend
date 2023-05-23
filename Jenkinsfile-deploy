@@ -17,7 +17,6 @@ pipeline{
     }
     stage('Deploy'){
         steps{
-            sh 'npm run dev'
             sh 'docker run -d -p 5173:5173 devops-frontend-$GIT_BRANCH:1.0.$BUILD_NUMBER'
         }
     }

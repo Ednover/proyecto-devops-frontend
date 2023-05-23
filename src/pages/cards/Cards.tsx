@@ -4,6 +4,7 @@ import { Modal } from "../../components/modal";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
 import Card from "../../models/Card";
+import { useAuthUser } from "../../hooks";
 
 const Cards = () => {
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,12 @@ const Cards = () => {
     number: "",
     expiryDate: "",
   });
+
+  const { authUser } = useAuthUser();
+
+  const config = {
+    headers: { Authorization: `Bearer ${authUser.accessToken}` }
+  };
 
   const handleChange = (e: any) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -35,7 +42,7 @@ const Cards = () => {
   const handleDelete = (id: string) => {
     setLoading(true);
     axios
-      .delete(`http://localhost:3000/api/cards/${id}`, {})
+      .delete(`http://localhost:3000/api/cards/${id}`, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -57,7 +64,7 @@ const Cards = () => {
         bankName: formState.bankName,
         number: formState.number,
         expiryDate: formState.expiryDate,
-      })
+      }, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -83,7 +90,7 @@ const Cards = () => {
     axios
       .put(`http://localhost:3000/api/cards/${selectedCard!.id}`, {
         ...selectedCard,
-      })
+      }, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -118,7 +125,7 @@ const Cards = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:3000/api/cards");
+      const response = await axios.get("http://localhost:3000/api/cards", config);
       setCards(response.data);
       setSelectedCard(null);
     } catch (error) {

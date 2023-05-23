@@ -4,6 +4,7 @@ import { Modal } from "../../components/modal";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
 import Transaction from "../../models/Transaction";
+import { useAuthUser } from "../../hooks";
 
 const Transactions = () => {
   const [loading, setLoading] = useState(true);
@@ -17,6 +18,12 @@ const Transactions = () => {
     amount: "",
     description: "",
   });
+
+  const { authUser } = useAuthUser();
+
+  const config = {
+    headers: { Authorization: `Bearer ${authUser.accessToken}` }
+  };
 
   const handleChange = (e: any) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -35,7 +42,7 @@ const Transactions = () => {
   const handleDelete = (id: string) => {
     setLoading(true);
     axios
-      .delete(`http://localhost:3000/api/transactions/${id}`, {})
+      .delete(`http://localhost:3000/api/transactions/${id}`, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -56,7 +63,7 @@ const Transactions = () => {
         type: formState.type,
         amount: formState.amount,
         description: formState.description,
-      })
+      }, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -84,7 +91,8 @@ const Transactions = () => {
         {
           ...selectedTransaction,
           transactionDate: new Date(selectedTransaction!.transactionDate),
-        }
+        },
+        config
       )
       .then((res) => {
         closeModal();
@@ -120,7 +128,8 @@ const Transactions = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:3000/api/transactions"
+        "http://localhost:3000/api/transactions",
+        config
       );
       const formattedTransactions = response.data.map(
         (transaction: Transaction) => ({

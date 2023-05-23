@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Modal } from "../../components/modal";
 import { MdDelete, MdEdit, MdAttachMoney } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
+import { useAuthUser } from "../../hooks";
 
 const Budgets = () => {
   const [loading, setLoading] = useState(true);
@@ -20,6 +21,12 @@ const Budgets = () => {
     endDate: "",
   });
 
+  const { authUser } = useAuthUser();
+
+  const config = {
+    headers: { Authorization: `Bearer ${authUser.accessToken}` }
+  };
+
   const handleExpense = (e: any) => {
     e.preventDefault();
     const newAmountLeft = selectedBudget!.amountLeft - parseInt(expenseValue);
@@ -28,7 +35,7 @@ const Budgets = () => {
     axios
       .put(`http://localhost:3000/api/budgets/${selectedBudget!.id}`, {
         amountLeft: newAmountLeft,
-      })
+      }, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -63,7 +70,7 @@ const Budgets = () => {
   const handleDelete = (id: string) => {
     setLoading(true);
     axios
-      .delete(`http://localhost:3000/api/budgets/${id}`, {})
+      .delete(`http://localhost:3000/api/budgets/${id}`, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -86,7 +93,7 @@ const Budgets = () => {
         amountLeft: formState.amount,
         startDate: new Date(formState.startDate),
         endDate: new Date(formState.endDate),
-      })
+      }, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -114,7 +121,7 @@ const Budgets = () => {
         ...selectedBudget,
         startDate: new Date(selectedBudget!.startDate),
         endDate: new Date(selectedBudget!.endDate),
-      })
+      }, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -150,7 +157,7 @@ const Budgets = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:3000/api/budgets");
+      const response = await axios.get("http://localhost:3000/api/budgets", config);
       const formattedBudgets = response.data.map((budget: Budget) => ({
         ...budget,
         startDate: budget.startDate.split("T")[0],

@@ -5,6 +5,7 @@ import { MdDelete, MdEdit } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
 import Account from "../../models/Account";
 import Card from "../../models/Card";
+import { useAuthUser } from "../../hooks";
 
 const Accounts = () => {
   const [loading, setLoading] = useState(true);
@@ -18,6 +19,12 @@ const Accounts = () => {
     balance: "",
     // cards: "",
   });
+
+  const { authUser } = useAuthUser();
+
+  const config = {
+    headers: { Authorization: `Bearer ${authUser.accessToken}` }
+  };
 
   const handleChange = (e: any) => {
     setFormState({ ...formState, [e.target.name]: e.target.value });
@@ -36,7 +43,7 @@ const Accounts = () => {
   const handleDelete = (id: string) => {
     setLoading(true);
     axios
-      .delete(`http://localhost:3000/api/accounts/${id}`, {})
+      .delete(`http://localhost:3000/api/accounts/${id}`, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -57,7 +64,7 @@ const Accounts = () => {
         name: formState.name,
         balance: formState.balance,
         // cards: formState.cards,
-      })
+      }, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -82,7 +89,7 @@ const Accounts = () => {
     axios
       .put(`http://localhost:3000/api/accounts/${selectedAccount!.id}`, {
         ...selectedAccount,
-      })
+      }, config)
       .then((res) => {
         closeModal();
         fetchData();
@@ -117,7 +124,7 @@ const Accounts = () => {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get("http://localhost:3000/api/accounts");
+      const response = await axios.get("http://localhost:3000/api/accounts", config);
       setAccounts(response.data);
       setSelectedAccount(null);
     } catch (error) {
@@ -129,7 +136,7 @@ const Accounts = () => {
 
   const fetchCardData = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/cards");
+      const response = await axios.get("http://localhost:3000/api/cards", config);
       setCards(response.data);
     } catch (error) {
       console.error(error);

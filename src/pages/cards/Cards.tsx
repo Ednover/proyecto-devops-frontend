@@ -43,7 +43,7 @@ const Cards = () => {
     setLoading(true);
     axios
       .delete(`http://localhost:3000/api/cards/${id}`, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -65,7 +65,7 @@ const Cards = () => {
         number: formState.number,
         expiryDate: formState.expiryDate,
       }, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -91,7 +91,7 @@ const Cards = () => {
       .put(`http://localhost:3000/api/cards/${selectedCard!.id}`, {
         ...selectedCard,
       }, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })

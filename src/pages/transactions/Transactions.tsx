@@ -43,7 +43,7 @@ const Transactions = () => {
     setLoading(true);
     axios
       .delete(`http://localhost:3000/api/transactions/${id}`, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -64,7 +64,7 @@ const Transactions = () => {
         amount: formState.amount,
         description: formState.description,
       }, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -94,7 +94,7 @@ const Transactions = () => {
         },
         config
       )
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })

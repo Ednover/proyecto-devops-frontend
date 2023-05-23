@@ -36,7 +36,7 @@ const Budgets = () => {
       .put(`http://localhost:3000/api/budgets/${selectedBudget!.id}`, {
         amountLeft: newAmountLeft,
       }, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -71,7 +71,7 @@ const Budgets = () => {
     setLoading(true);
     axios
       .delete(`http://localhost:3000/api/budgets/${id}`, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -94,7 +94,7 @@ const Budgets = () => {
         startDate: new Date(formState.startDate),
         endDate: new Date(formState.endDate),
       }, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -122,7 +122,7 @@ const Budgets = () => {
         startDate: new Date(selectedBudget!.startDate),
         endDate: new Date(selectedBudget!.endDate),
       }, config)
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })

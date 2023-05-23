@@ -1,4 +1,5 @@
 pipeline{
+    agent{ label 'agent1'}
     parameters{
         string(name: 'GIT_BRANCH', defaultValue: 'develops', description: 'Git branch to build')
         string(name: 'BUILD_NUMBER', defaultValue: '00', description: 'Build number')

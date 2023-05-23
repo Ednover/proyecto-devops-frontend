@@ -36,7 +36,7 @@ const Transactions = () => {
     setLoading(true);
     axios
       .delete(`http://localhost:3000/api/transactions/${id}`, {})
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -57,7 +57,7 @@ const Transactions = () => {
         amount: formState.amount,
         description: formState.description,
       })
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -86,7 +86,7 @@ const Transactions = () => {
           transactionDate: new Date(selectedTransaction!.transactionDate),
         }
       )
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })

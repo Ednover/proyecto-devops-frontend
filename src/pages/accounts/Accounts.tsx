@@ -4,13 +4,13 @@ import { Modal } from "../../components/modal";
 import { MdDelete, MdEdit } from "react-icons/md";
 import { ClipLoader } from "react-spinners";
 import Account from "../../models/Account";
-import Card from "../../models/Card";
+//import Card from "../../models/Card";
 
 const Accounts = () => {
   const [loading, setLoading] = useState(true);
   const [modalTitle, setModalTitle] = useState("");
   const [accounts, setAccounts] = useState<Account[]>([]);
-  const [cards, setCards] = useState([]);
+  const [_cards, setCards] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedAccount, setSelectedAccount] = useState<Account | null>(null);
   const [formState, setFormState] = useState({
@@ -37,7 +37,7 @@ const Accounts = () => {
     setLoading(true);
     axios
       .delete(`http://localhost:3000/api/accounts/${id}`, {})
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -58,7 +58,7 @@ const Accounts = () => {
         balance: formState.balance,
         // cards: formState.cards,
       })
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })
@@ -83,7 +83,7 @@ const Accounts = () => {
       .put(`http://localhost:3000/api/accounts/${selectedAccount!.id}`, {
         ...selectedAccount,
       })
-      .then((res) => {
+      .then( () => {
         closeModal();
         fetchData();
       })

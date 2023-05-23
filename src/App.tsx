@@ -19,12 +19,17 @@ function App() {
           </Route>
           <Route element={<RequireAuthUser />}>
             <Route path="/" element={<Layout />} />
-            {/* aqui colocar todas las rutas protegidas */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/accounts" element={<Accounts />} />
+            <Route path="/budgets" element={<Budgets />} />
+            <Route path="/cards" element={<Cards />} />
+            <Route path="/transactions" element={<Transactions />} />
           </Route>
         </Routes>
       </AuthUser.Provider>
+
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

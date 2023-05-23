@@ -1,7 +1,11 @@
-import { Link, Outlet } from "react-router-dom";
-import pic from "/images/20687.png";
+import { Link, Outlet, useNavigate } from "react-router-dom";
+import pic from '/images/20687.png'
+import { useAuthUser } from "../../hooks";
+
 
 export default function Layout() {
+  const { authUser } = useAuthUser();
+  const navigate = useNavigate();
   return (
     <div className="bg-gray-100">
       <nav className="bg-white border-b border-gray-200">
@@ -25,19 +29,19 @@ export default function Layout() {
               </div>
             </div>
             <div className="hidden sm:ml-6 sm:flex sm:items-center">
-              {/* {session && (
+              {authUser.userName && (
                 <div className="flex">
                   <p className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700 hover:cursor-default">
-                    Welcome, {session.user?.name}
+                    Welcome, {authUser.userName}
                   </p>
                   <button
-                    onClick={() => signOut()}
+                    onClick={() => navigate("/logout")}
                     className="px-3 py-2 rounded-md text-sm font-medium text-gray-500 hover:text-gray-700"
                   >
                     Sign Out
                   </button>
                 </div>
-              )} */}
+              )}
             </div>
           </div>
         </div>

@@ -33,18 +33,18 @@ const Login = () => {
     e.preventDefault();
     console.log(formState);
 
-    axios.post('http://localhost:3000/api/auth', formState)
+    axios.post('http://localhost:3000/api/login', formState)
       .then((res) => {
         console.log(res);
-        const user = res.data.user;
-        const accessToken = res.data.accessToken;
+        const userName = res.data.user.name;
+        const accessToken = res.data.user.accessToken;
         const context = {
-          "user": user,
+          "userName": userName,
           "accessToken": accessToken,
         }
         if(res.status == 200){
           window.sessionStorage.setItem("Context",JSON.stringify(context))
-          setAuthUser({ user, accessToken });
+          setAuthUser({ userName, accessToken });
           setFormState({ ...initial });
           setDisplayError(false);
           navigate("/");

@@ -1,26 +1,33 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login, Register } from "./pages";
-import { Layout } from "./components";
-import { Dashboard } from "./pages/dashboard";
-import { Budgets } from "./pages/budgets";
-import { Cards } from "./pages/cards";
-import { Transactions } from "./pages/transactions";
-import { Accounts } from "./pages/accounts";
+import { Layout, Logout, RequireAuthUser } from "./components";
+import { useState } from "react";
+import { AuthUser } from "./context";
 
 function App() {
+
+  const [authUser, setAuthUser] = useState(() => !(window.sessionStorage.getItem("Context")) ? {} : JSON.parse(window.sessionStorage.Context));
+
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/accounts" element={<Accounts />} />
-          <Route path="/budgets" element={<Budgets />} />
-          <Route path="/cards" element={<Cards />} />
-          <Route path="/transactions" element={<Transactions />} />
-        </Route>
-      </Routes>
+      <AuthUser.Provider value={{ authUser, setAuthUser }}>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/logout" element={<Logout />} />
+            <Route path="/register" element={<Register />} />
+          </Route>
+          <Route element={<RequireAuthUser />}>
+            <Route path="/" element={<Layout />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/accounts" element={<Accounts />} />
+            <Route path="/budgets" element={<Budgets />} />
+            <Route path="/cards" element={<Cards />} />
+            <Route path="/transactions" element={<Transactions />} />
+          </Route>
+        </Routes>
+      </AuthUser.Provider>
+
     </BrowserRouter>
   );
 }

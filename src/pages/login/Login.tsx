@@ -47,13 +47,14 @@ const Login = () => {
           setAuthUser({ userName, accessToken });
           setFormState({ ...initial });
           setDisplayError(false);
-          navigate("/");
+          navigate("/dashboard");
         }
       })
       .catch((error) => {
         console.log(error)
         setDisplayError(true);
       })
+    
   };
 
   return (

@@ -8,7 +8,7 @@ const Logout = () => {
     window.sessionStorage.removeItem("Context");
     setAuthUser({});
     useEffect(() =>{
-        navigate('/');
+        navigate('/dashboard');
     },[])
     return <></>;
 }

@@ -9,7 +9,7 @@ pipeline{
     }
     stage('Deploy'){
         steps{
-            build job: 'devops-frontend-deploy', parameters: [
+            build job: 'devops-front-deploy', parameters: [
                 string(name: 'GIT_BRANCH', value: "${GIT_BRANCH}"),
                 string(name: 'BUILD_NUMBER', value: "${BUILD_NUMBER}")
             ]

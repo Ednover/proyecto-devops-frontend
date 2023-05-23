@@ -3,6 +3,11 @@ import { Login, Register } from "./pages";
 import { Layout, Logout, RequireAuthUser } from "./components";
 import { useState } from "react";
 import { AuthUser } from "./context";
+import { Dashboard } from "./pages/dashboard";
+import { Budgets } from "./pages/budgets";
+import { Cards } from "./pages/cards";
+import { Transactions } from "./pages/transactions";
+import { Accounts } from "./pages/accounts";
 
 function App() {
 
@@ -18,13 +23,16 @@ function App() {
             <Route path="/register" element={<Register />} />
           </Route>
           <Route element={<RequireAuthUser />}>
-            <Route path="/" element={<Layout />} />
-            {/* aqui colocar todas las rutas protegidas */}
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/accounts" element={<Accounts />} />
+            <Route path="/budgets" element={<Budgets />} />
+            <Route path="/cards" element={<Cards />} />
+            <Route path="/transactions" element={<Transactions />} />
           </Route>
         </Routes>
       </AuthUser.Provider>
     </BrowserRouter>
-  )
+  );
 }
 
-export default App
+export default App;

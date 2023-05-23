@@ -1,0 +1,19 @@
+pipeline{
+    agent{ label 'agent1'}
+    stages{
+        stage('Build'){
+        steps{
+            sh 'npm install'
+            sh 'npm run build'
+        }
+    }
+    stage('Deploy'){
+        steps{
+            build job: 'devops-frontend-deploy', parameters: [
+                string(name: 'GIT_BRANCH', value: "${GIT_BRANCH}"),
+                string(name: 'BUILD_NUMBER', value: "${BUILD_NUMBER}")
+            ]
+        }
+    }
+    }
+}

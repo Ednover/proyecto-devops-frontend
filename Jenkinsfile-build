@@ -12,7 +12,7 @@ pipeline{
                 sshPublisher(
                     publishers: [
                         sshPublisherDesc(
-                            configName: 'vm',
+                            configName: 'virtual machine',
                             transfers: [
                                 sshTransfer(
                                     sourceFiles: 'dist/**/*',

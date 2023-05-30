@@ -7,17 +7,6 @@ pipeline{
             sh 'npm run build'
         }
     }
-    stage('Deploy VM'){
-        steps{
-            sh 'sftp pablo1@10.41.5.197'
-            sh 'put -r dist/ .'
-            sh 'bye'
-            sh 'ssh pablo1@10.41.5.197'
-            sh 'cd $HOME/dist/'
-            sh 'echo "devops123" | sudo -S  mv * /var/www/html > /dev/null'
-            sh 'exit'
-        }
-    }
     stage('Deploy'){
         steps{
             build job: 'devops-front-deploy', parameters: [

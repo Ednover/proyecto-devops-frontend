@@ -10,7 +10,7 @@ pipeline{
         stage('Publish on VM'){
             steps{
                 sshPublisher(
-                    pbulishers: [
+                    publishers: [
                         sshPublisherDesc(
                             configName: 'vm',
                             transfers: [

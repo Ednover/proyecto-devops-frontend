@@ -8,7 +8,7 @@ RUN npm install
 
 COPY . /app
 
-RUN npm build || true
+RUN npm build
 
 EXPOSE 5173
 

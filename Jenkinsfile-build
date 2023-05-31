@@ -7,24 +7,6 @@ pipeline{
             sh 'npm run build'
         }
     }
-        stage('Publish on VM'){
-            steps{
-                sshPublisher(
-                    publishers: [
-                        sshPublisherDesc(
-                            configName: 'virtual machine',
-                            transfers: [
-                                sshTransfer(
-                                    sourceFiles: 'dist/**/*',
-                                    removePrefix: 'dist/',
-                                    remoteDirectory: '/var/www/html'
-                                )
-                            ]
-                        )
-                    ]
-                )
-            }
-    }
     stage('Deploy'){
         steps{
             build job: 'devops-front-deploy', parameters: [
